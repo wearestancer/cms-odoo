@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+  <record id="process_stancer_refund_form_view" model="ir.ui.view">
+    <field name="name">process.stancer.refund.form</field>
+    <field name="model">process.stancer.refund</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <span style="font-size:12px; color:gray;">
+            NOTE : Partial Refund possible while payment status is `Captured`
+          </span>
+          <hr/>
+          <group>
+            <field name="tx_id" invisible="1"/>
+            <field name="stancer_payment_status" invisible="1"/>
+            <field name="refunded_amount" invisible="1"/>
+          </group>
+          <group invisible="is_partial_refund == True">
+            <group>
+              <field name="is_full_refund"/>
+            </group>
+            <group>
+              <field name="full_refund_amount"/>
+            </group>
+          </group>
+          <group invisible="is_full_refund == True or stancer_payment_status == 'to_capture'">
+            <group>
+              <field name="is_partial_refund"/>
+            </group>
+            <group>
+              <field name="partial_refund_amount" readonly="not is_partial_refund"/>
+            </group>
+          </group>
+
+          <group>
+          </group>
+
+          <footer>
+            <button
+              class="btn-primary"
+              name="process_refund"
+              type="object"
+              string="Process Refund"
+            />
+            <button
+              class="btn-secondary"
+              string="Cancel"
+              special="cancel"
+            />
+          </footer>
+        </sheet>
+      </form>
+    </field>
+  </record>
+</odoo>

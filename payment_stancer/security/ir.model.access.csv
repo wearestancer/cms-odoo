@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+stancer.response.access,stancer.response.access,payment_stancer.model_stancer_response,,1,1,1,1
+process.stancer.refund.access,process.stancer.refund.access,payment_stancer.model_process_stancer_refund,,1,1,1,1

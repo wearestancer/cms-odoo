@@ -1,0 +1,85 @@
+@use "sass:math";
+
+$base-index: 99990;
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@mixin transition($property) {
+  transition-behavior: allow-discrete;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+  transition-property: $property;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition-duration: 50ms;
+  }
+}
+
+.stancer-backdrop {
+  @include transition(opacity);
+
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: $base-index;
+}
+
+.stancer-in-page {
+  width: 100%;
+  border: 5px solid transparent;
+  border-image: linear-gradient(to right, #79a7ff, #ff7675);
+  border-image-slice: 1;
+
+  &-redirect {
+    height: 800px;
+  }
+}
+
+.stancer-payment-iframe {
+  display: none;
+}
+
+.stancer-redirect {
+  display: none;
+  position: fixed;
+  z-index: #{$base-index + 1};
+
+  &-container {
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-loader {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: conic-gradient(#0000 10%, #fff);
+    mask: radial-gradient(farthest-side, #0000 calc(100% - 9px), #000 0);
+    animation: spin 1s infinite linear;
+  }
+
+  &-text {
+    color: #fff;
+    font-size: large;
+
+    &.stancer-text-secondary {
+      font-size: medium;
+      color: #ddd;
+
+      a {
+        color: #79a7ff;
+      }
+    }
+  }
+}

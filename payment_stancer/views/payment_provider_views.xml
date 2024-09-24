@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="payment_provider_form_stancer" model="ir.ui.view">
+    <field name="name">Stancer Provider Form</field>
+    <field name="model">payment.provider</field>
+    <field name="inherit_id" ref="payment.payment_provider_form"/>
+    <field name="arch" type="xml">
+      <group name="provider_credentials" position='inside'>
+        <group name="stancer_credentials" invisible="code != 'stancer'">
+          <field
+            name="stancer_key_client"
+            string="Public key (ptest or pprod)"
+            required="code == 'stancer' and state != 'disabled'"
+          />
+          <field
+            name="stancer_key_secret"
+            string="Private key (stest or sprod)"
+            required="code == 'stancer' and state != 'disabled'"
+            password="True"
+          />
+          <field name="is_iframe_enable"/>
+        </group>
+      </group>
+
+      <xpath expr="//notebook/page[@name='messages']" position="after">
+        <page string="Stancer Response" name="stancer_response" invisible="code != 'stancer'">
+          <field name="stancer_response_ids">
+            <tree editable="bottom">
+              <field name="response_code"/>
+              <field name="response_message"/>
+            </tree>
+          </field>
+        </page>
+      </xpath>
+   </field>
+  </record>
+</odoo>

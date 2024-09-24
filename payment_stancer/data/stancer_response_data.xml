@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+  <record id="response_data_1" model="stancer.response">
+    <field name="response_code">00-successful</field>
+    <field name="response_message">Successful approval/completion or that VIP PIN verification is valid</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_2" model="stancer.response">
+    <field name="response_code">00-unsuccessful</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_3" model="stancer.response">
+    <field name="response_code">05</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do Not Honor]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_4" model="stancer.response">
+    <field name="response_code">51</field>
+    <field name="response_message">The payment has been refused [Response CODE: 51, Message: Insufficient Funds]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_5" model="stancer.response">
+    <field name="response_code">41</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_7" model="stancer.response">
+    <field name="response_code">01</field>
+    <field name="response_message">The payment has been refused [Response CODE: 01, Message: Refer to card issuer]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_8" model="stancer.response">
+    <field name="response_code">02</field>
+    <field name="response_message">The payment has been refused [Response CODE: 02, Message: Refer to card issuer,
+      special condition]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_9" model="stancer.response">
+    <field name="response_code">03</field>
+    <field name="response_message">The payment has been refused [Response CODE: 03, Message: Invalid merchant or
+      service provider]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_10" model="stancer.response">
+    <field name="response_code">04</field>
+    <field name="response_message">The payment has been refused [Response CODE: 04, Message: Pickup]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_11" model="stancer.response">
+    <field name="response_code">06</field>
+    <field name="response_message">The payment has been refused [Response CODE: 06, Message: General error]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_12" model="stancer.response">
+    <field name="response_code">07</field>
+    <field name="response_message">The payment has been refused [Response CODE: 07, Message: Pickup card, special
+      condition (other than lost/stolen card)]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_13" model="stancer.response">
+    <field name="response_code">08</field>
+    <field name="response_message">The payment has been refused [Response CODE: 08, Message: Honor with
+      identification]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_14" model="stancer.response">
+    <field name="response_code">09</field>
+    <field name="response_message">The payment has been refused [Response CODE: 09, Message: Request in progress]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_15" model="stancer.response">
+    <field name="response_code">10</field>
+    <field name="response_message">The payment has been refused [Response CODE: 10, Message: Partial approval]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_16" model="stancer.response">
+    <field name="response_code">11</field>
+    <field name="response_message">The payment has been refused [Response CODE: 11, Message: VIP approval]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_17" model="stancer.response">
+    <field name="response_code">12</field>
+    <field name="response_message">The payment has been refused [Response CODE: 12, Message: Invalid transaction]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_18" model="stancer.response">
+    <field name="response_code">13</field>
+    <field name="response_message">The payment has been refused [Response CODE: 13, Message: Invalid amount
+        (currency conversion field overflow) or amount exceeds maximum for card program]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_19" model="stancer.response">
+    <field name="response_code">14</field>
+    <field name="response_message">The payment has been refused [Response CODE: 14, Message: Transaction not
+        authorized / Invalid account number (no such number)]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_20" model="stancer.response">
+    <field name="response_code">15</field>
+    <field name="response_message">The payment has been refused [Response CODE: 15, Message: No such issuer]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_21" model="stancer.response">
+    <field name="response_code">16</field>
+    <field name="response_message">The payment has been refused [Response CODE: 16, Message: Insufficient funds]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_22" model="stancer.response">
+    <field name="response_code">17</field>
+    <field name="response_message">The payment has been refused [Response CODE: 17, Message: Customer
+      cancellation]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_23" model="stancer.response">
+    <field name="response_code">19</field>
+    <field name="response_message">The payment has been refused [Response CODE: 19, Message: Re-enter transaction]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_24" model="stancer.response">
+    <field name="response_code">20</field>
+    <field name="response_message">The payment has been refused [Response CODE: 20, Message: Invalid response]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_25" model="stancer.response">
+    <field name="response_code">21</field>
+    <field name="response_message">The payment has been refused [Response CODE: 21, Message: No action taken (unable
+      to back out prior transaction)]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_26" model="stancer.response">
+    <field name="response_code">22</field>
+    <field name="response_message">The payment has been refused [Response CODE: 22, Message: Suspected
+      Malfunction]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_27" model="stancer.response">
+    <field name="response_code">25</field>
+    <field name="response_message">The payment has been refused [Response CODE: 25, Message: Unable to locate record
+      in file, or account number is missing from the inquiry]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_28" model="stancer.response">
+    <field name="response_code">28</field>
+    <field name="response_message">The payment has been refused [Response CODE: 28, Message: File is temporarily
+      unavailable]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_29" model="stancer.response">
+    <field name="response_code">30</field>
+    <field name="response_message">The payment has been refused [Response CODE: 30, Message: Format error]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_30" model="stancer.response">
+    <field name="response_code">43</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_31" model="stancer.response">
+    <field name="response_code">52</field>
+    <field name="response_message">The payment has been refused [Response CODE: 52, Message: No checking account]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_32" model="stancer.response">
+    <field name="response_code">53</field>
+    <field name="response_message">The payment has been refused [Response CODE: 53, Message: No savings account]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_33" model="stancer.response">
+    <field name="response_code">54</field>
+    <field name="response_message">The payment has been refused [Response CODE: 54, Message: Expired card]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_34" model="stancer.response">
+    <field name="response_code">55</field>
+    <field name="response_message">The payment has been refused [Response CODE: 55, Message: Incorrect PIN]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_35" model="stancer.response">
+    <field name="response_code">57</field>
+    <field name="response_message">The payment has been refused [Response CODE: 57, Message: Transaction not
+      permitted to cardholder]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_36" model="stancer.response">
+    <field name="response_code">58</field>
+    <field name="response_message">The payment has been refused [Response CODE: 58, Message: Transaction not allowed
+      at terminal]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_37" model="stancer.response">
+    <field name="response_code">59</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_38" model="stancer.response">
+    <field name="response_code">61</field>
+    <field name="response_message">The payment has been refused [Response CODE: 61, Message: Activity amount limit
+      exceeded]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_39" model="stancer.response">
+    <field name="response_code">62</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_40" model="stancer.response">
+    <field name="response_code">63</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_41" model="stancer.response">
+    <field name="response_code">65</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_42" model="stancer.response">
+    <field name="response_code">68</field>
+    <field name="response_message">The payment has been refused [Response CODE: 68, Message: Response received too
+      late]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_43" model="stancer.response">
+    <field name="response_code">75</field>
+    <field name="response_message">The payment has been refused [Response CODE: 75, Message: Allowable number of
+      PIN-entry tries exceeded]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_44" model="stancer.response">
+    <field name="response_code">76</field>
+    <field name="response_message">The payment has been refused [Response CODE: 76, Message: Unable to locate
+        previous message (no match on retrieval reference number)]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_45" model="stancer.response">
+    <field name="response_code">77</field>
+    <field name="response_message">The payment has been refused [Response CODE: 77, Message: Previous message
+        located for a repeat or reversal, but repeat or reversal data are inconsistent with original message]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_46" model="stancer.response">
+    <field name="response_code">78</field>
+    <field name="response_message">The payment has been refused [Response CODE: 78, Message: ’Blocked, first
+        used’—The transaction is from a new cardholder, and the card has not been properly unblocked.]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_47" model="stancer.response">
+    <field name="response_code">80</field>
+    <field name="response_message">The payment has been refused [Response CODE: 80, Message: Visa transactions:
+        credit issuer unavailable. Private label and check acceptance: Invalid date]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_48" model="stancer.response">
+    <field name="response_code">81</field>
+    <field name="response_message">The payment has been refused [Response CODE: 81, Message: PIN cryptographic error
+        found (error found by VIC security module during PIN decryption)]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_49" model="stancer.response">
+    <field name="response_code">82</field>
+    <field name="response_message">The payment has been refused [Response CODE: 82, Message: Negative CAM, dCVV,
+        iCVV, or CVV results]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_50" model="stancer.response">
+    <field name="response_code">83</field>
+    <field name="response_message">The payment has been refused [Response CODE: 83, Message: Unable to verify PIN]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_51" model="stancer.response">
+    <field name="response_code">85</field>
+    <field name="response_message">The payment has been refused [Response CODE: 85, Message: No reason to decline a
+        request for account number verification, address verification, CVV2 verification; or a credit voucher or
+        merchandise return]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_52" model="stancer.response">
+    <field name="response_code">91</field>
+    <field name="response_message">The payment has been refused [Response CODE: 91, Message: Issuer unavailable or
+        switch inoperative (STIP not applicable or available for this transaction)]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_53" model="stancer.response">
+    <field name="response_code">92</field>
+    <field name="response_message">The payment has been refused [Response CODE: 92, Message: Destination cannot be
+        found for routing]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_54" model="stancer.response">
+    <field name="response_code">93</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_55" model="stancer.response">
+    <field name="response_code">94</field>
+    <field name="response_message">The payment has been refused [Response CODE: 94, Message: Duplicate
+        transmission]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_56" model="stancer.response">
+    <field name="response_code">95</field>
+    <field name="response_message">The payment has been refused [Response CODE: 95, Message: Reconcile error]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_57" model="stancer.response">
+    <field name="response_code">96</field>
+    <field name="response_message">The payment has been refused [Response CODE: 96, Message: System malfunction,
+        System malfunction or certain field error conditions]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_58" model="stancer.response">
+    <field name="response_code">A0</field>
+    <field name="response_message">The payment has been refused [Response CODE: A0, Message: Authentication
+        Required, you must do a card inserted payment with PIN code]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_59" model="stancer.response">
+    <field name="response_code">A1</field>
+    <field name="response_message">The payment has been refused [Response CODE: A1, Message: Authentication
+        Required, you must do a 3-D Secure authentication]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_60" model="stancer.response">
+    <field name="response_code">B1</field>
+    <field name="response_message">The payment has been refused [Response CODE: B1, Message: Surcharge amount not
+        permitted on Visa cards (U.S. acquirers only)]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_61" model="stancer.response">
+    <field name="response_code">N0</field>
+    <field name="response_message">The payment has been refused [Response CODE: N0, Message: Force STIP]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_62" model="stancer.response">
+    <field name="response_code">N3</field>
+    <field name="response_message">The payment has been refused [Response CODE: N3, Message: Cash service not
+        available]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_63" model="stancer.response">
+    <field name="response_code">N4</field>
+    <field name="response_message">The payment has been refused [Response CODE: N4, Message: Cashback request
+        exceeds issuer limit]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_64" model="stancer.response">
+    <field name="response_code">N7</field>
+    <field name="response_message">The payment has been refused [Response CODE: N7, Message: Decline for CVV2
+        failure]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_65" model="stancer.response">
+    <field name="response_code">P2</field>
+    <field name="response_message">The payment has been refused [Response CODE: P2, Message: Invalid biller
+        information]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_66" model="stancer.response">
+    <field name="response_code">P5</field>
+    <field name="response_message">The payment has been refused [Response CODE: P5, Message: PIN change/unblock
+        request declined]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_67" model="stancer.response">
+    <field name="response_code">P6</field>
+    <field name="response_message">The payment has been refused [Response CODE: P6, Message: Unsafe PIN]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_68" model="stancer.response">
+    <field name="response_code">Q1</field>
+    <field name="response_message">The payment has been refused [Response CODE: Q1, Message: Card authentication
+        failed]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_69" model="stancer.response">
+    <field name="response_code">R0</field>
+    <field name="response_message">The payment has been refused [Response CODE: R0, Message: Stop payment order]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_70" model="stancer.response">
+    <field name="response_code">R1</field>
+    <field name="response_message">The payment has been refused [Response CODE: R1, Message: Revocation of
+        authorization order]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_71" model="stancer.response">
+    <field name="response_code">R3</field>
+    <field name="response_message">The payment has been refused [Response CODE: R3, Message: Revocation of all
+        authorizations order]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_72" model="stancer.response">
+    <field name="response_code">XA</field>
+    <field name="response_message">The payment has been refused [Response CODE: XA, Message: Forward to issuer]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_73" model="stancer.response">
+    <field name="response_code">XD</field>
+    <field name="response_message">The payment has been refused [Response CODE: XD, Message: Forward to issuer]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_74" model="stancer.response">
+    <field name="response_code">Z1</field>
+    <field name="response_message">The payment has been refused [Response CODE: Z1, Message: Offline-declined]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_75" model="stancer.response">
+    <field name="response_code">Z3</field>
+    <field name="response_message">The payment has been refused [Response CODE: Z3, Message: Unable to go online]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_76" model="stancer.response">
+    <field name="response_code">7810</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_77" model="stancer.response">
+    <field name="response_code">7811</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_78" model="stancer.response">
+    <field name="response_code">7840</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]</field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_79" model="stancer.response">
+    <field name="response_code">7898</field>
+    <field name="response_message">The payment has been refused [Response CODE: 7898, Message: Bank server
+        unavailable
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_81" model="stancer.response">
+    <field name="response_code">1040</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_82" model="stancer.response">
+    <field name="response_code">1261</field>
+    <field name="response_message">The payment has been refused [Response CODE: 1261, Message: Duplicate
+        processing]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_83" model="stancer.response">
+    <field name="response_code">4808</field>
+    <field name="response_message">The payment has been refused [Response CODE: 4808, Message: Requested/required
+        authorization not obtained. Transaction not authorized]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_84" model="stancer.response">
+    <field name="response_code">4834</field>
+    <field name="response_message">The payment has been refused [Response CODE: 4834, Message: Duplicate
+        processing]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_85" model="stancer.response">
+    <field name="response_code">4837</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_86" model="stancer.response">
+    <field name="response_code">4853</field>
+    <field name="response_message">The payment has been refused [Response CODE: 4853, Message: Cardholder Dispute
+        Defective/Not as Described]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_87" model="stancer.response">
+    <field name="response_code">4863</field>
+    <field name="response_message">The payment has been refused [Response CODE: 05, Message: Do not Honor]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+
+  <record id="response_data_88" model="stancer.response">
+    <field name="response_code">98</field>
+    <field name="response_message">The payment has been refused [Response CODE: 98, Message: Server Inaccessible]
+    </field>
+    <field name="payment_provider_id" ref="payment_stancer.payment_provider_stancer"/>
+  </record>
+</odoo>
