@@ -1,0 +1,68 @@
+workflow:
+  rules:
+    - if: '$CI_COMMIT_REF_PROTECTED == "true"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - when: always
+
+
+variables:
+  DOCKER_REGISTRY: wearestancer
+  PYTHON_VERSION: "3.10"
+
+
+Create archive:
+  stage: deploy
+
+  image: ${DOCKER_REGISTRY}/python:${PYTHON_VERSION}
+
+  before_script:
+    - python3 -V
+    - pip -V
+    - pipenv -v
+    - pipenv install
+    - pipenv requirements > ./requirements.txt
+
+  script:
+    - pipenv run create-archive
+
+  artifacts:
+    paths:
+      - '*.zip'
+
+Black:
+  stage: test
+
+  image: ${DOCKER_REGISTRY}/python:${PYTHON_VERSION}
+
+  before_script:
+    - python3 -V
+    - pip -V
+    - pipenv -v
+    - pipenv install --dev
+
+  script:
+    - pipenv run python3 -m black --check ./ || true
+    - pipenv run python3 -m black --diff ./ > black_diff.txt
+
+  artifacts:
+    paths:
+      - black_diff.txt
+
+Isort:
+  stage: test
+
+  image: ${DOCKER_REGISTRY}/python:${PYTHON_VERSION}
+  before_script:
+    - python3 -V
+    - pip -V
+    - pipenv -v
+    - pipenv install --dev
+
+  script:
+    - pipenv run python3 -m isort -c ./ || true
+    - pipenv run python3 -m isort -d ./ > isort.txt
+  artifacts:
+    paths:
+      - isort.txt
