@@ -1,6 +1,6 @@
 {
     "name": "Stancer",
-    "version": "17.0.1.0.0",
+    "version": "1.0.0",
     "category": "Accounting/Payment Providers",
     "sequence": 350,
     "summary": "Stancer for Odoo",

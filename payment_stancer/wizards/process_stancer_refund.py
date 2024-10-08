@@ -144,7 +144,7 @@ class ProcessStancerRefund(models.TransientModel):
                 "company_id": stancer_provider.company_id.id,
                 "payment_method_line_id": payment_method_line.id,
                 "payment_transaction_id": refund_tx.id,
-                "ref": f"{self.tx_id.reference} Stancer Refund",
+                "payment_reference": f"{self.tx_id.reference} Stancer Refund",
             }
 
             payment = self.env["account.payment"].sudo().create(payment_values)
