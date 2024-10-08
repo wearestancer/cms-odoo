@@ -36,7 +36,7 @@ class PaymentProvider(models.Model):
         comodel_name="stancer.response",
         inverse_name="payment_provider_id",
     )
-    is_iframe_enable = fields.Boolean(string="Enable Iframe", default="true")
+    is_iframe_enable = fields.Boolean(string="Enable Iframe", default="True")
 
     # === COMPUTE METHODS ===#
 

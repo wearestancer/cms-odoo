@@ -103,9 +103,9 @@ PaymentForm.include({
     window.addEventListener("message", (e) => {
       const data = e.data;
 
-      if (e.origin !== "https://payment.stancer.com") {
-        return;
-      }
+          if (e.origin !== "https://payment.stancer.com") {
+            return;
+          }
 
       if (data.status === "finished") {
         this._stancerRedirect(return_url);

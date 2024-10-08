@@ -6,16 +6,17 @@
     <field name="inherit_id" ref="payment.payment_provider_form"/>
     <field name="arch" type="xml">
       <group name="provider_credentials" position='inside'>
-        <group name="stancer_credentials" invisible="code != 'stancer'">
+        <group name="stancer_credentials"
+          attrs="{'invisible': [('code', '!=', 'stancer')]}">
           <field
             name="stancer_key_client"
             string="Public key (ptest or pprod)"
-            required="code == 'stancer' and state != 'disabled'"
+            attrs="{'required': [('code', '=', 'stancer'), ('state', '!=', 'disabled')]}"
           />
           <field
             name="stancer_key_secret"
             string="Private key (stest or sprod)"
-            required="code == 'stancer' and state != 'disabled'"
+            attrs="{'required': [('code', '=', 'stancer'), ('state', '!=', 'disabled')]}"
             password="True"
           />
           <field name="is_iframe_enable"/>
@@ -23,7 +24,7 @@
       </group>
 
       <xpath expr="//notebook/page[@name='messages']" position="after">
-        <page string="Stancer Response" name="stancer_response" invisible="code != 'stancer'">
+        <page string="Stancer Response" name="stancer_response" attrs="{'invisible': [('code', '!=', 'stancer')]}">
           <field name="stancer_response_ids">
             <list editable="bottom">
               <field name="response_code"/>
