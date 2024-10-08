@@ -77,13 +77,14 @@ class StancerController(http.Controller):
                     "company_id": stancer_provider.company_id.id,
                     "payment_method_line_id": payment_method_line.id,
                     "payment_transaction_id": last_transaction_of_order.id,
-                    "ref": last_transaction_of_order.reference,
+                    "payment_reference": last_transaction_of_order.reference,
                 }
 
                 payment = request.env["account.payment"].sudo().create(payment_values)
 
                 last_transaction_of_order.payment_id = payment.id
                 last_transaction_of_order._set_done()
+                PaymentPostProcessing.monitor_transaction(last_transaction_of_order)
                 last_transaction_of_order.stancer_payment_status = status
                 last_transaction_of_order.state_message = (
                     stancer_response.sudo()
@@ -93,18 +94,6 @@ class StancerController(http.Controller):
 
                 payment.sudo().action_post()
 
-                if not stancer_provider.is_iframe_enable:
-                    order.sudo()._send_order_confirmation_mail()
-                    invoice = order.sudo()._create_invoices()
-                    invoice.sudo().action_post()
-
-                if stancer_provider.is_iframe_enable:
-                    order.sudo()._send_order_confirmation_mail()
-                    last_transaction_of_order.sudo()._finalize_post_processing()
-                    invoice = order.sudo()._create_invoices()
-                    invoice.sudo().action_post()
-
-                    return request.redirect("/shop/payment/validate")
             else:
                 last_transaction_of_order.state_message = (
                     stancer_response.sudo()
