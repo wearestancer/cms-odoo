@@ -1,10 +1,11 @@
 /** @odoo-module **/
-
+import { rpc } from '@web/core/network/rpc';
 import PaymentForm from "@payment/js/payment_form";
 PaymentForm.include({
   events: Object.assign({}, PaymentForm.prototype.events || {}, {
     "click #o_payment_methods": "_onStancerClick",
   }),
+
 
   init() {
     if (
@@ -65,9 +66,11 @@ PaymentForm.include({
 
     if (StancerRadio.checked === true) {
       const StancerPaymentId = parseInt(StancerRadio.dataset.providerId, 10);
-      const IsIframe = await this.rpc("/stancer_provider_iframe_check", {
+      const IsIframe = await rpc("/stancer_provider_iframe_check",
+        {
         stancer_id: StancerPaymentId,
-      });
+      }
+    );
 
       if (!IsIframe) {
         return;
@@ -77,7 +80,7 @@ PaymentForm.include({
       IframeContainer.style.display = "block";
 
       if (IframeElement.src.includes("about:blank")) {
-        IframeElement.src = await this.rpc("/prepare_stancer_iframe", {
+        IframeElement.src = await rpc("/prepare_stancer_iframe", {
           stancer_id: StancerPaymentId,
         });
         this.stancer_create_iframe();
