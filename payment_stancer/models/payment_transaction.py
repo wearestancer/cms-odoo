@@ -5,10 +5,11 @@ from werkzeug import urls
 from odoo import _
 from odoo import fields
 from odoo import models
-from odoo.addons.payment_stancer import const
-from odoo.addons.payment_stancer.controllers.main import StancerController
 from odoo.exceptions import ValidationError
 from odoo.tools import float_round
+
+from ..const import PAYMENT_PAGE
+from ..controllers.main import StancerController
 
 _logger = logging.getLogger(__name__)
 
@@ -47,85 +48,7 @@ class PaymentTransaction(models.Model):
         default=0.0,
     )
 
-    def _get_specific_rendering_values(self, processing_values):
-        """
-        Override of payment to return Stancer rendering values.
-
-        :param dict processing_values: The generic and specific processing values of the transaction
-        :return: The dict of provider-specific processing values.
-        :rtype: dict
-        """
-        res = super()._get_specific_rendering_values(processing_values)
-
-        if self.provider_code != "stancer":
-            return res
-
-        _logger.warning(processing_values)
-        base_url = self.provider_id.get_base_url()
-
-        payload = {
-            "order_id": self.reference,
-            "amount": float_round(
-                self.amount * 100,
-                precision_digits=2,
-                rounding_method="HALF-UP",
-            ),
-            "currency": self.currency_id.name.lower(),
-            "auth": True,
-            "return_url": urls.url_join(base_url, StancerController._return_url),
-        }
-        payment_link_data = self.provider_id._stancer_make_request(
-            "/v1/checkout",
-            payload=payload,
-            method="POST",
-        )
-
-        self.update({"state": "error", "provider_reference": payment_link_data["id"]})
-
-        _logger.warning(payment_link_data)
-
-        rendering_values = {
-            "api_url": urls.url_join(
-                const.PAYMENT_PAGE,
-                f"/{self.provider_id.stancer_key_client}/{payment_link_data['id']}",
-            ),
-        }
-
-        _logger.warning(rendering_values)
-        return rendering_values
-
-    def _get_tx_from_notification_data(self, provider_code, notification_data):
-        """
-        Get payment status from Paytabs.
-
-        :param provider_code: The code of the provider handling the transaction.
-        :param notification_data: The data received from Paytabs notification.
-        :return: The transaction matching the reference.
-        """
-        _logger.warning(notification_data)
-        tx = super()._get_tx_from_notification_data(provider_code, notification_data)
-        _logger.warning(notification_data)
-
-        if provider_code != "stancer":
-            return tx
-
-        reference = notification_data.get("order_id", False)
-
-        if not reference:
-            raise ValidationError(_("Stancer: No reference found."))
-
-        tx = self.search(
-            [("reference", "=", reference), ("provider_code", "=", "stancer")]
-        )
-
-        if not tx:
-            raise ValidationError(
-                _("Stancer: No transaction found matching reference %s.") % reference
-            )
-
-        _logger.warning(tx)
-
-        return tx
+    # === ACTION METHODS ===#
 
     def action_stancer_refund(self):
         """Pop-up the wizard to process refund"""
@@ -163,3 +86,166 @@ class PaymentTransaction(models.Model):
                 "default_full_refund_amount": remaining_amount,
             },
         }
+
+    # === BUSINESS METHODS - PAYMENT FLOW ===#
+
+    def _get_specific_rendering_values(self, processing_values):
+        """
+        Override of payment to return Stancer rendering values.
+
+        :param dict processing_values: The generic and specific processing values of the transaction
+        :return: The dict of provider-specific processing values.
+        :rtype: dict
+        """
+        res = super()._get_specific_rendering_values(processing_values)
+
+        if self.provider_code != "stancer":
+            return res
+
+        _logger.warning(processing_values)
+
+        base_url = self.provider_id.get_base_url()
+        base_return_url = urls.url_join(base_url, StancerController._return_url)
+        arguments = urls.url_encode({"reference": self.reference})
+        return_url = f"{base_return_url}?{arguments}"
+
+        if self.provider_reference is False or self.provider_reference is None:
+            payload = {
+                "order_id": self.reference,
+                "amount": float_round(
+                    self.amount * 100,
+                    precision_digits=2,
+                    rounding_method="HALF-UP",
+                ),
+                "currency": self.currency_id.name.lower(),
+                "auth": True,
+            }
+
+            stancer_payment = self.provider_id._stancer_make_request(
+                "/v1/checkout",
+                payload=payload,
+                method="POST",
+            )
+
+            self.provider_reference = stancer_payment["id"]
+            _logger.warning(stancer_payment)
+
+        rendering_values = {
+            "api_url": urls.url_join(
+                PAYMENT_PAGE,
+                f"/{self.provider_id.stancer_key_client}/{self.provider_reference}",
+            ),
+            "return_url": return_url,
+        }
+
+        return rendering_values
+
+    def _get_tx_from_notification_data(self, provider_code, notification_data):
+        """
+        Get payment status from Paytabs.
+
+        :param provider_code: The code of the provider handling the transaction.
+        :param notification_data: The data received from Paytabs notification.
+        :return: The transaction matching the reference.
+        """
+        tx = super()._get_tx_from_notification_data(provider_code, notification_data)
+        _logger.warning(notification_data)
+
+        if provider_code != "stancer":
+            return tx
+
+        reference = notification_data.get("reference", False)
+
+        if not reference:
+            raise ValidationError(_("Stancer: No reference found."))
+
+        tx = self.search(
+            [("reference", "=", reference), ("provider_code", "=", "stancer")]
+        )
+
+        if not tx:
+            raise ValidationError(
+                _("Stancer: No transaction found matching reference %s.") % reference
+            )
+
+        _logger.warning(tx)
+
+        return tx
+
+    def _process_notification_data(self, notification_data):
+        """Update the transaction state and the provider reference based on the notification data.
+
+        This method should usually not be called directly. The correct method to call upon receiving
+        notification data is :meth:`_handle_notification_data`.
+
+        For a provider to handle transaction processing, it must overwrite this method and process
+        the notification data.
+
+        Note: `self.ensure_one()`
+
+        :param dict notification_data: The notification data sent by the provider.
+        :return: None
+        """
+        self.ensure_one()
+        super()._process_notification_data(notification_data)
+        stancer_provider = self.provider_id
+        stancer_payment_id = self.provider_reference
+
+        request_url = "/v1/checkout/" + stancer_payment_id
+        payment_stancer = stancer_provider._stancer_make_request(
+            request_url,
+            method="GET",
+        )
+        _logger.info(
+            "Stancer Payment :\"%s\" status : %s",
+            str(payment_stancer["id"]),
+            str(payment_stancer.get("status"))
+            )
+        response = payment_stancer["response"]
+        status = payment_stancer["status"]
+
+        if response != "00" or status in (
+                "canceled",
+                "disputed",
+                "failed",
+                "refused",
+            ):
+            self._process_unsucessful_payment(status,response)
+            return
+        self._process_sucessful_payment(status)
+
+
+    def _process_sucessful_payment(self,status):
+        """ Process a payment who suceeded.
+
+        :param string status: The status of the sucessful payment.
+        """
+        # payment = self._create_payment(**{"payment_reference": self.reference})
+        # self.payment_id = payment.id
+        self.stancer_payment_status = status
+        self.state_message = (
+            self.env["stancer.response"].sudo()
+            .search([("response_code", "=", "00-successful")])
+            .response_message
+        )
+        self._set_done()
+
+    def _process_unsucessful_payment(self,status,response):
+        """Set the error message for a failed payment
+
+        :param string status: The status of the unsucessful payment .
+        :param string response: The response Code of the unsucessful payment.
+        """
+        response_message = (
+            self.env["stancer.response"].sudo()
+            .search([("response_code", "=", response)])
+            .response_message
+        )
+        self.stancer_payment_status = status
+        self.state_message = (
+            response_message
+            if response_message
+            else "The payment has been refused [Response CODE: 05, Message: Do not Honor]"
+        )
+        self.stancer_payment_status = status
+        self._set_error(f"Invalid payment status: {status}, response code: {response}")
