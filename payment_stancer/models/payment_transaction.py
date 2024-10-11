@@ -1,3 +1,4 @@
+from decimal import Decimal
 import logging
 
 from werkzeug import urls
@@ -63,8 +64,8 @@ class PaymentTransaction(models.Model):
             endpoint, method="GET"
         )
         _logger.warning(
-            "\n\n-------------payment_response-------------\n\n%s\n\n",
-            str(payment_response),
+            "Stancer Refund Reference : %s\n",
+            str(payment_response.get(('id'))),
         )
         self.stancer_payment_status = payment_response.get("status")
         remaining_amount = float_round(
@@ -89,6 +90,30 @@ class PaymentTransaction(models.Model):
 
     # === BUSINESS METHODS - PAYMENT FLOW ===#
 
+    def get_amount_as_cent(self, float_amount):
+        """Get the amount of the transaction in cents, as needed by the stancer API
+
+        params: float_amount, the amount we want to convert
+            (sometimes, it is not the transaction amount e.g. refunds)
+        returns: int_amount, the amount converted as cents.
+        """
+        str_amount = Decimal(float_amount * pow(10, self.currency_id.decimal_places))
+
+        return int(str_amount)
+
+    def get_amount_as_currency(self, int_amount):
+        """Get the amount of the transaction in the current currency.
+
+        params: float_amount, the amount we want to convert
+            (sometimes, it is not the transaction amount e.g. refunds)
+        returns: float_amount, the amount converted in the current currency.
+        """
+        str_amount = round(
+            Decimal(int_amount / pow(10, self.currency_id.decimal_places)),
+            self.currency_id.decimal_places,
+        )
+        return float(str_amount)
+
     def _get_specific_rendering_values(self, processing_values):
         """
         Override of payment to return Stancer rendering values.
@@ -112,11 +137,7 @@ class PaymentTransaction(models.Model):
         if self.provider_reference is False or self.provider_reference is None:
             payload = {
                 "order_id": self.reference,
-                "amount": float_round(
-                    self.amount * 100,
-                    precision_digits=2,
-                    rounding_method="HALF-UP",
-                ),
+                "amount": self.get_amount_as_cent(self.amount),
                 "currency": self.currency_id.name.lower(),
                 "auth": True,
             }
@@ -197,26 +218,25 @@ class PaymentTransaction(models.Model):
             method="GET",
         )
         _logger.info(
-            "Stancer Payment :\"%s\" status : %s",
+            'Stancer Payment :"%s" status : %s',
             str(payment_stancer["id"]),
-            str(payment_stancer.get("status"))
-            )
+            str(payment_stancer.get("status")),
+        )
         response = payment_stancer["response"]
         status = payment_stancer["status"]
 
         if response != "00" or status in (
-                "canceled",
-                "disputed",
-                "failed",
-                "refused",
-            ):
-            self._process_unsucessful_payment(status,response)
+            "canceled",
+            "disputed",
+            "failed",
+            "refused",
+        ):
+            self._process_unsucessful_payment(status, response)
             return
         self._process_sucessful_payment(status)
 
-
-    def _process_sucessful_payment(self,status):
-        """ Process a payment who suceeded.
+    def _process_sucessful_payment(self, status):
+        """Process a payment who suceeded.
 
         :param string status: The status of the sucessful payment.
         """
@@ -224,20 +244,22 @@ class PaymentTransaction(models.Model):
         # self.payment_id = payment.id
         self.stancer_payment_status = status
         self.state_message = (
-            self.env["stancer.response"].sudo()
+            self.env["stancer.response"]
+            .sudo()
             .search([("response_code", "=", "00-successful")])
             .response_message
         )
         self._set_done()
 
-    def _process_unsucessful_payment(self,status,response):
+    def _process_unsucessful_payment(self, status, response):
         """Set the error message for a failed payment
 
         :param string status: The status of the unsucessful payment .
         :param string response: The response Code of the unsucessful payment.
         """
         response_message = (
-            self.env["stancer.response"].sudo()
+            self.env["stancer.response"]
+            .sudo()
             .search([("response_code", "=", response)])
             .response_message
         )

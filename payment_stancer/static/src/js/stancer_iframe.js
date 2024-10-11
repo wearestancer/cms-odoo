@@ -42,15 +42,18 @@ PaymentForm.include({
       this._displayframe(false);
       return;
     }
-    rpc("/stancer_provider_iframe_check", {
+    rpc("/stancer_is_iframe", {
       provider_id: providerId,
     }).then((iframe) => {
       if (iframe) {
-        Object.assign(this.paymentContext, {
-          tokenizationRequested: false,
-          providerId: providerId,
-          paymentMethodId: paymentOptionId,
-        });
+        Object.assign(
+          this.paymentContext,
+          {
+            tokenizationRequested: false,
+            providerId: providerId,
+            paymentMethodId: paymentOptionId,
+          }
+        );
         this._initiatePaymentFlow(
           providerCode,
           paymentOptionId,
