@@ -7,7 +7,9 @@ from werkzeug.urls import url_join
 from odoo import _
 from odoo import fields
 from odoo import models
-from odoo.addons.payment_stancer import const
+from ..const import SUPPORTED_CURRENCIES
+from ..const import API_HOST
+from ..const import DEFAULT_PAYMENT_METHODS_CODES
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -50,12 +52,19 @@ class PaymentProvider(models.Model):
 
     # === BUSINESS METHODS ===#
 
+    def _get_default_payment_method_codes(self):
+        """Override of `payment` to return the default payment method codes."""
+        default_codes = super()._get_default_payment_method_codes()
+        if self.code != "stancer":
+            return default_codes
+        return DEFAULT_PAYMENT_METHODS_CODES
+
     def _get_supported_currencies(self):
         """Override of `payment` to return the supported currencies."""
         supported_currencies = super()._get_supported_currencies()
         if self.code == "stancer":
             supported_currencies = supported_currencies.filtered(
-                lambda c: c.name in const.SUPPORTED_CURRENCIES
+                lambda c: c.name in SUPPORTED_CURRENCIES
             )
         return supported_currencies
 
@@ -73,7 +82,7 @@ class PaymentProvider(models.Model):
         """
         self.ensure_one()
         basic = HTTPBasicAuth(self.stancer_key_secret, "")
-        url = url_join(const.API_HOST, endpoint)
+        url = url_join(API_HOST, endpoint)
         try:
             if method == "GET":
                 response = requests.get(url, json=payload, auth=basic)
@@ -102,10 +111,3 @@ class PaymentProvider(models.Model):
                 "Stancer: " + _("Could not establish the connection to the API.")
             )
         return response.json()
-
-    def _get_default_payment_method_codes(self):
-        """Override of `payment` to return the default payment method codes."""
-        default_codes = super()._get_default_payment_method_codes()
-        if self.code != "stancer":
-            return default_codes
-        return const.DEFAULT_PAYMENT_METHODS_CODES
