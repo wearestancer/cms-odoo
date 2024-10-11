@@ -20,7 +20,7 @@ Create archive:
   before_script:
     - python3 -V
     - pip -V
-    - pipenv -v
+    - pipenv --version
     - pipenv install
     - pipenv requirements > ./requirements.txt
 
@@ -39,7 +39,7 @@ Black:
   before_script:
     - python3 -V
     - pip -V
-    - pipenv -v
+    - pipenv --version
     - pipenv install --dev
 
   script:
@@ -57,12 +57,12 @@ Isort:
   before_script:
     - python3 -V
     - pip -V
-    - pipenv -v
+    - pipenv --version
     - pipenv install --dev
 
   script:
-    - pipenv run python3 -m isort -c ./ || true
-    - pipenv run python3 -m isort -d ./ > isort.txt
+    - pipenv run python3 -m isort --check ./ || true
+    - pipenv run python3 -m isort --diff ./ > isort_diff.txt
   artifacts:
     paths:
-      - isort.txt
+      - isort_diff.txt
