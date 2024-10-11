@@ -44,7 +44,7 @@ class ProcessStancerRefund(models.TransientModel):
 
             remaining_amount = float_round(
                 self.tx_id.amount - self.tx_id.refunded_amount,
-                precision_digits=2,
+                precision_digits=self.tx_id.currency_id.decimal_places,
                 rounding_method="HALF-UP",
             )
 
@@ -63,17 +63,9 @@ class ProcessStancerRefund(models.TransientModel):
             )
         )
         amount = (
-            float_round(
-                self.full_refund_amount * 100,
-                precision_digits=2,
-                rounding_method="HALF-UP",
-            )
+            self.tx_id.get_amount_as_cent(self.full_refund_amount)
             if self.is_full_refund
-            else float_round(
-                self.partial_refund_amount * 100,
-                precision_digits=2,
-                rounding_method="HALF-UP",
-            )
+            else self.tx_id.get_amount_as_cent(self.partial_refund_amount)
         )
         stancer_payment_id = self.tx_id.provider_reference
 
@@ -97,11 +89,7 @@ class ProcessStancerRefund(models.TransientModel):
                     .id,
                     "partner_id": self.tx_id.partner_id.id,
                     "reference": f"Ref - {self.tx_id.reference} {str(len(self.tx_id.stancer_refund_tx_ids) + 1)}",
-                    "amount": float_round(
-                        -amount / 100,
-                        precision_digits=2,
-                        rounding_method="HALF-UP",
-                    ),
+                    "amount": self.tx_id.get_amount_as_currency(-amount),
                     "state": "done",
                     "currency_id": self.tx_id.currency_id.id,
                     "provider_reference": refund_response.get("payment"),
@@ -114,28 +102,16 @@ class ProcessStancerRefund(models.TransientModel):
 
             if self.is_full_refund:
                 self.tx_id.is_full_refund = True
-                self.tx_id.refunded_amount = float_round(
-                    amount / 100,
-                    precision_digits=2,
-                    rounding_method="HALF-UP",
-                )
+                self.tx_id.refunded_amount = self.tx_id.get_amount_as_currency(amount)
             elif self.is_partial_refund:
                 self.tx_id.is_partial_refund = True
-                self.tx_id.refunded_amount += float_round(
-                    amount / 100,
-                    precision_digits=2,
-                    rounding_method="HALF-UP",
-                )
+                self.tx_id.refunded_amount += self.tx_id.get_amount_as_currency(amount)
                 if self.tx_id.amount == self.tx_id.refunded_amount:
                     self.tx_id.is_partial_refund = False
                     self.tx_id.is_full_refund = True
 
             payment_values = {
-                "amount": float_round(
-                    amount / 100,
-                    precision_digits=2,
-                    rounding_method="HALF-UP",
-                ),
+                "amount": self.tx_id.get_amount_as_currency(amount),
                 "payment_type": "outbound",
                 "currency_id": self.tx_id.currency_id.id,
                 "partner_id": self.tx_id.partner_id.commercial_partner_id.id,
