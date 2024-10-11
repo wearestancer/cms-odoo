@@ -4,7 +4,7 @@
     "category": "Accounting/Payment Providers",
     "sequence": 350,
     "summary": "Stancer for Odoo",
-    "depends": ["payment", "account", "sale_management", "website_sale"],
+    "depends": ["payment"],
     "data": [
         "security/ir.model.access.csv",
         "wizards/process_stancer_refund_form_view.xml",
