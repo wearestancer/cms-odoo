@@ -25,7 +25,7 @@ class StancerController(http.Controller):
         auth="public",
         website=True,
     )
-    def stancer_provider_iframe_check(self, provider_id, **kwargs):
+    def stancer_is_iframe(self, provider_id, **kwargs):
         """Check the Iframe settings in Stancer provider."""
         stancer_provider = request.env["payment.provider"].sudo().browse(provider_id)
 
