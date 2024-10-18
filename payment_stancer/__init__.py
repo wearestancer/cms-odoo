@@ -4,7 +4,6 @@ from odoo.addons.payment import setup_provider
 from . import controllers
 from . import models
 from . import tests
-from . import wizards
 
 __all__ = (
     "controllers",
@@ -12,7 +11,6 @@ __all__ = (
     "post_init_hook",
     "tests",
     "uninstall_hook",
-    "wizards",
 )
 
 
