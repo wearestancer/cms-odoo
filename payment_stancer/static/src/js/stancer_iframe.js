@@ -78,6 +78,10 @@ PaymentForm.include({
     paymentMethodCode,
     processingValues
   ) {
+    if(providerCode !== "stancer") {
+      this._super(...arguments)
+      return;
+    }
     if (this.radioInput.checked === false) {
       this._displayframe(false);
       return;

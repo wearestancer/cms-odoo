@@ -20,7 +20,7 @@ class StancerController(http.Controller):
         return request.redirect("/payment/status")
 
     @http.route(
-        "/stancer_provider_iframe_check",
+        "/stancer_is_iframe",
         type="json",
         auth="public",
         website=True,
