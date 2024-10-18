@@ -4,7 +4,7 @@
     "category": "Accounting/Payment Providers",
     "sequence": 350,
     "summary": "Stancer for Odoo",
-    "depends": ["payment", "account"],
+    "depends": ["payment"],
     "data": [
         "security/ir.model.access.csv",
         "views/payment_stancer_templates.xml",

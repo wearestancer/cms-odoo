@@ -199,8 +199,6 @@ class PaymentTransaction(models.Model):
 
         :param string status: The status of the sucessful payment.
         """
-        # payment = self._create_payment(**{"payment_reference": self.reference})
-        # self.payment_id = payment.id
         self.stancer_payment_status = status
         self.state_message = (
             self.env["stancer.response"]
