@@ -52,7 +52,7 @@ class PaymentTransaction(models.Model):
             return refund_tx
 
         stancer_provider = self.provider_id
-        refund_url = f"/v1/refunds/"
+        refund_url = "/v1/refunds/"
         payload= {
             # refund amount is negative so we make it positive.
             "amount" : abs(self.get_amount_as_cent(refund_tx.amount)),
@@ -96,6 +96,7 @@ class PaymentTransaction(models.Model):
                 "amount": self.get_amount_as_cent(self.amount),
                 "currency": self.currency_id.name.lower(),
                 "auth": True,
+                "return_url": return_url
             }
 
             stancer_payment = self.provider_id._stancer_make_request(
@@ -111,8 +112,7 @@ class PaymentTransaction(models.Model):
             "api_url": urls.url_join(
                 PAYMENT_PAGE,
                 f"/{self.provider_id.stancer_key_client}/{self.provider_reference}",
-            ),
-            "return_url": return_url,
+            )
         }
 
         return rendering_values
@@ -224,7 +224,7 @@ class PaymentTransaction(models.Model):
         self.state_message = (
             response_message
             if response_message
-            else "The payment has been refused [Response CODE: 05, Message: Do not Honor]"
+            else "The payment has been refused."
         )
         self.stancer_payment_status = status
         self._set_error(f"Invalid payment status: {status}, response code: {response}")

@@ -98,11 +98,12 @@ class PaymentProvider(models.Model):
                     url,
                 )
                 raise ValidationError(
-                    "Stancer: "
-                    + _(
+                    _(
                         "The communication with the API failed. "
-                        "Stancer gave us the following information: '%s'"
-                        response.json().get("error", {}).get("description",response.json())
+                        + "Stancer gave us the following information: '%s'",
+                        response.json()
+                        .get("error", {})
+                        .get("description", response.json()),
                     )
                 )
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
