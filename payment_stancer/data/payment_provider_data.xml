@@ -27,30 +27,4 @@
         <field name="code">stancer</field>
         <field name="redirect_form_view_id" ref="redirect_form"/>
     </record>
-
-
-    <!-- <record id="payment_method_cartes_bancaires_payment_stancer" model="payment.method">
-        <field name="name">Cartes Bancaires</field>
-        <field name="code">cb</field>
-        <field name="primary_payment_method_id" eval="ref('payment_stancer.payment_method_stancer')"/>
-        <field name="active">False</field>
-        <field name="image" type="base64" file="payment_stancer/static/description/cb.png"/>
-    </record>
-
-    <record id="payment_method_visa_stancer" model="payment.method">
-        <field name="name">VISA</field>
-        <field name="code">visa</field>
-        <field name="primary_payment_method_id" eval="ref('payment_stancer.payment_method_stancer')"/>
-        <field name="active">False</field>
-        <field name="image" type="base64" file="payment/static/img/visa.png"/>
-    </record>
-
-    <record id="payment_method_mastercard_stancer" model="payment.method">
-        <field name="name">MasterCard</field>
-        <field name="code">mastercard</field>
-        <field name="primary_payment_method_id" eval="ref('payment_stancer.payment_method_stancer')"/>
-        <field name="active">False</field>
-        <field name="image" type="base64" file="payment/static/img/mastercard.png"/>
-    </record> -->
-
 </odoo>

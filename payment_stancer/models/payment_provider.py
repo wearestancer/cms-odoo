@@ -100,8 +100,7 @@ class PaymentProvider(models.Model):
                 raise ValidationError(
                     "Stancer: "
                     + _(
-                        "The communication with the API failed. "
-                        "Stancer gave us the following information: '%s'"
+                        "The communication with the API failed. Stancer gave us the following information: '%s'",
                         response.json().get("error", {}).get("description",response.json())
                     )
                 )
