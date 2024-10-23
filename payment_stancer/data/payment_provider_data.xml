@@ -7,16 +7,20 @@
     </record>
     <record id="payment_provider_stancer" model="payment.provider">
         <field name="name">Stancer</field>
+        <field name="code">stancer</field>
         <field name="image_128"
                type="base64"
                file="payment_stancer/static/description/icon.png"/>
         <field name="display_as">Stancer</field>
+        <field name="module_id" ref="base.module_payment_stancer"/>
         <field name="payment_icon_ids" eval="[(6, 0, [
                 ref('payment.payment_icon_cc_visa'),
                 ref('payment.payment_icon_cc_mastercard'),
                 ref('payment_stancer.payment_icon_cc_cartes_bancaires'),
             ])]"/>
-        <field name="module_id" ref="base.module_payment_stancer"/>
+        <field name="support_tokenization">False</field>
+        <field name="support_express_checkout">False</field>
+        <field name="support_refund">partial</field>
     </record>
 
     <record id="payment_stancer.payment_provider_stancer" model="payment.provider">
@@ -24,11 +28,6 @@
         <field name="redirect_form_view_id" ref="redirect_form"/>
     </record>
 
-    <record id="account_payment_method_stancer" model="account.payment.method">
-        <field name="name">Stancer</field>
-        <field name="code">stancer</field>
-        <field name="payment_type">inbound</field>
-    </record>
 
     <!-- <record id="payment_method_cartes_bancaires_payment_stancer" model="payment.method">
         <field name="name">Cartes Bancaires</field>
