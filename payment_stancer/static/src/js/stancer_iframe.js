@@ -42,18 +42,18 @@ PaymentForm.include({
       this._displayframe(false);
       return;
     }
-    rpc("/stancer_is_iframe", {
-      provider_id: providerId,
-    }).then((iframe) => {
+    this.rpc(
+       "/stancer_is_iframe",
+       {
+        provider_id: providerId,
+      },
+    ).then((iframe) => {
       if (iframe) {
-        Object.assign(
-          this.paymentContext,
-          {
-            tokenizationRequested: false,
-            providerId: providerId,
-            paymentMethodId: paymentOptionId,
-          }
-        );
+        Object.assign(this.paymentContext, {
+          tokenizationRequested: false,
+          providerId: providerId,
+          paymentMethodId: paymentOptionId,
+        });
         this._initiatePaymentFlow(
           providerCode,
           paymentOptionId,
@@ -78,8 +78,8 @@ PaymentForm.include({
     paymentMethodCode,
     processingValues
   ) {
-    if(providerCode !== "stancer") {
-      this._super(...arguments)
+    if (providerCode !== "stancer") {
+      this._super(...arguments);
       return;
     }
     if (this.radioInput.checked === false) {
@@ -89,8 +89,9 @@ PaymentForm.include({
     this._displayframe();
 
     if (this.stancerIframe.src.includes("about:blank")) {
-      rpc("/prepare_stancer_iframe", processingValues).then(
+      this.rpc("/prepare_stancer_iframe", { ...processingValues } ).then(
         (rendering_value) => {
+
           this._stancerHandleIframe(rendering_value);
         }
       );
@@ -98,7 +99,7 @@ PaymentForm.include({
   },
 
   /** Link the Iframe to our payment page and add a listener for the return event */
-  _stancerHandleIframe({ api_url, return_url }) {
+  _stancerHandleIframe({ api_url }) {
     this.stancerIframe.src = api_url;
     window.addEventListener("message", (e) => {
       const data = e.data;
@@ -108,7 +109,8 @@ PaymentForm.include({
       }
 
       if (data.status === "finished") {
-        this._stancerRedirect(return_url);
+        window.postMessage({ stopRedirection: true });
+        window.location.href = e.data.url;
         return;
       }
     });
