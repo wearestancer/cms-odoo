@@ -98,7 +98,7 @@ PaymentForm.include({
   },
 
   /** Link the Iframe to our payment page and add a listener for the return event */
-  _stancerHandleIframe({ api_url}) {
+  _stancerHandleIframe({ api_url, return_url}) {
     this.stancerIframe.src = api_url;
     window.addEventListener("message", (e) => {
       const data = e.data;
@@ -108,8 +108,7 @@ PaymentForm.include({
       }
 
       if (data.status === "finished") {
-        window.postMessage({ stopRedirection: true });
-        this._stancerRedirect(e.data.url);
+        this._stancerRedirect(return_url);
       }
     });
   },

@@ -96,7 +96,7 @@ class PaymentTransaction(models.Model):
                 "amount": self.get_amount_as_cent(self.amount),
                 "currency": self.currency_id.name.lower(),
                 "auth": True,
-                "return_url": return_url
+                "return_url": return_url if not self.provider_id.is_iframe_enable else ''
             }
 
             stancer_payment = self.provider_id._stancer_make_request(
@@ -112,7 +112,8 @@ class PaymentTransaction(models.Model):
             "api_url": urls.url_join(
                 PAYMENT_PAGE,
                 f"/{self.provider_id.stancer_key_client}/{self.provider_reference}",
-            )
+            ),
+            "return_url": return_url
         }
 
         return rendering_values
