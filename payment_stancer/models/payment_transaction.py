@@ -60,15 +60,8 @@ class PaymentTransaction(models.Model):
             }
         stancer_refund = stancer_provider._stancer_make_request(refund_url,payload,"POST")
         refund_tx.provider_reference= stancer_refund['id']
-        if stancer_refund['status'] in(
-            'refunded',
-            'payment_canceled',
-            'refund_sent',
-            'to_refund'
-        ):
-            refund_tx._set_done()
-            return
-        refund_tx.set_error()
+        refund_tx._set_done()
+
 
     def _get_specific_rendering_values(self, processing_values):
         """
@@ -96,7 +89,7 @@ class PaymentTransaction(models.Model):
                 "amount": self.get_amount_as_cent(self.amount),
                 "currency": self.currency_id.name.lower(),
                 "auth": True,
-                "return_url": return_url if not self.provider_id.is_iframe_enable else ''
+                "return_url" : return_url if not self.provider_id.is_iframe_enable else None,
             }
 
             stancer_payment = self.provider_id._stancer_make_request(
@@ -185,15 +178,20 @@ class PaymentTransaction(models.Model):
         response = payment_stancer["response"]
         status = payment_stancer["status"]
 
-        if response != "00" or status in (
-            "canceled",
-            "disputed",
-            "failed",
-            "refused",
-        ):
-            self._process_unsucessful_payment(status, response)
+        if status in ("to_capture" "capture_sent" "captured"):
+            self._process_sucessful_payment(status)
             return
-        self._process_sucessful_payment(status)
+
+        if status in ('authorized'):
+            payment_stancer = stancer_provider._stancer_make_request(
+                request_url,
+                method="PATCH",
+                payload={status: 'capture'}
+            )
+            self._process_sucessful_payment(status)
+            return
+
+        self._process_unsucessful_payment(status, response)
 
     def _process_sucessful_payment(self, status):
         """Process a payment who suceeded.
