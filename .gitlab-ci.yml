@@ -6,11 +6,9 @@ workflow:
       when: never
     - when: always
 
-
 variables:
   DOCKER_REGISTRY: wearestancer
   PYTHON_VERSION: "3.10"
-
 
 Create archive:
   stage: deploy
@@ -18,8 +16,7 @@ Create archive:
   image: ${DOCKER_REGISTRY}/python:${PYTHON_VERSION}
 
   before_script:
-    - python3 -V
-    - pip -V
+    - python3 --version
     - pipenv --version
     - pipenv install
     - pipenv requirements > ./requirements.txt
@@ -31,38 +28,31 @@ Create archive:
     paths:
       - '*.zip'
 
-Black:
-  stage: test
-
+Ruff format:
   image: ${DOCKER_REGISTRY}/python:${PYTHON_VERSION}
 
+  stage: test
+
   before_script:
-    - python3 -V
-    - pip -V
+    - mkdir -p "$PIP_CACHE_DIR" "$PIPENV_CACHE_DIR"
+
+    - python --version
     - pipenv --version
     - pipenv install --dev
 
   script:
-    - pipenv run python3 -m black --check ./ || true
-    - pipenv run python3 -m black --diff ./ > black_diff.txt
+    - pipenv run ruff format --diff
 
-  artifacts:
+  cache:
+    key: $CI_COMMIT_BRANCH
     paths:
-      - black_diff.txt
+      - $CACHE_DIR
 
-Isort:
-  stage: test
+    when: always
 
-  image: ${DOCKER_REGISTRY}/python:${PYTHON_VERSION}
-  before_script:
-    - python3 -V
-    - pip -V
-    - pipenv --version
-    - pipenv install --dev
-
-  script:
-    - pipenv run python3 -m isort --check ./ || true
-    - pipenv run python3 -m isort --diff ./ > isort_diff.txt
-  artifacts:
-    paths:
-      - isort_diff.txt
+  variables:
+    TMP_CACHE_DIR: .cache
+    CACHE_DIR: "${CI_PROJECT_DIR}/${TMP_CACHE_DIR}"
+    CACHE_FALLBACK_KEY: "$CI_DEFAULT_BRANCH"
+    PIP_CACHE_DIR: "${CI_PROJECT_DIR}/${TMP_CACHE_DIR}/pip"
+    PIPENV_CACHE_DIR: "${CI_PROJECT_DIR}/${TMP_CACHE_DIR}/pipenv"

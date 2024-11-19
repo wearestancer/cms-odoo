@@ -35,7 +35,9 @@ class PaymentTransaction(models.Model):
         inverse_name="main_tx_id",
         readonly=True,
     )
-    stancer_payment_status = fields.Char(string="Scancer Payment Status", readonly=True)
+    stancer_payment_status = fields.Char(
+        string="Stancer Payment Status", readonly=True
+    )
     is_partial_refund = fields.Boolean(string="Partially Refunded", readonly=True)
     is_full_refund = fields.Boolean(string="fully Refunded", readonly=True)
     refunded_amount = fields.Monetary(
