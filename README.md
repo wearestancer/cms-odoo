@@ -26,8 +26,8 @@ The recommended way of installing this module is through the Odoo marketplace.
 - Download the module:
   - via the Odoo Apps Store: search for the Stancer module on the [Odoo Apps Store](https://apps.odoo.com/apps),
     choose the version matching your Odoo version and download it or deploy it on your Odoo.sh instance.
-  - via GitHub: go to our [GitHub repository](https://github.com/wearestancer/cms-odoo) choose the branch matching
-    your Odoo version, click on the `code` button and choose download as zip.
+  - via GitHub: go to our [GitHub repository](https://github.com/wearestancer/cms-odoo) choose the latest release matching
+    your Odoo version, and download as zip.
 - Install the module, (a thorough explanation of the installation process can be found
   [here](https://www.cybrosys.com/blog/how-to-install-custom-modules-in-odoo)).
 - Open **Website > Configuration > Payment provider > Stancer**
