@@ -48,7 +48,9 @@ class StancerController(http.Controller):
             request_url,
             method="GET",
         )
-        _logger.warning("\n\n\n RESPONSE -----------> \n\n\n %s", str(payment_response))
+        _logger.warning(
+            "\n\n\n RESPONSE -----------> \n\n\n %s", str(payment_response)
+        )
 
         response = payment_response.get("response")
         status = payment_response.get("status")
