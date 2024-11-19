@@ -16,7 +16,9 @@ _logger = logging.getLogger(__name__)
 
 class PaymentTransaction(models.Model):
     _inherit = "payment.transaction"
-    stancer_payment_status = fields.Char(string="Scancer Payment Status", readonly=True)
+    stancer_payment_status = fields.Char(
+        string="Scancer Payment Status", readonly=True
+    )
 
     # === BUSINESS METHODS - PAYMENT FLOW ===#
 
@@ -44,23 +46,24 @@ class PaymentTransaction(models.Model):
         )
         return float(str_amount)
 
-    def _send_refund_request(self, amount_to_refund= None) :
+    def _send_refund_request(self, amount_to_refund=None):
         """Overrride the send refund request to make a refund request."""
         refund_tx = super()._send_refund_request(amount_to_refund)
-        if self.provider_code != 'stancer':
+        if self.provider_code != "stancer":
             return refund_tx
 
         stancer_provider = self.provider_id
         refund_url = f"/v1/refunds/"
-        payload= {
+        payload = {
             # refund amount is negative so we make it positive.
-            "amount" : abs(self.get_amount_as_cent(refund_tx.amount)),
-            "payment" : self.provider_reference
-            }
-        stancer_refund = stancer_provider._stancer_make_request(refund_url,payload,"POST")
-        refund_tx.provider_reference= stancer_refund['id']
+            "amount": abs(self.get_amount_as_cent(refund_tx.amount)),
+            "payment": self.provider_reference,
+        }
+        stancer_refund = stancer_provider._stancer_make_request(
+            refund_url, payload, "POST"
+        )
+        refund_tx.provider_reference = stancer_refund["id"]
         refund_tx._set_done()
-
 
     def _get_specific_rendering_values(self, processing_values):
         """
@@ -88,7 +91,9 @@ class PaymentTransaction(models.Model):
                 "amount": self.get_amount_as_cent(self.amount),
                 "currency": self.currency_id.name.lower(),
                 "auth": True,
-                "return_url" : return_url if not self.provider_id.is_iframe_enable else None,
+                "return_url": return_url
+                if not self.provider_id.is_iframe_enable
+                else None,
             }
             stancer_payment = self.provider_id._stancer_make_request(
                 "/v1/checkout",
@@ -104,7 +109,7 @@ class PaymentTransaction(models.Model):
                 PAYMENT_PAGE,
                 f"/{self.provider_id.stancer_key_client}/{self.provider_reference}",
             ),
-            'return_url': return_url
+            "return_url": return_url,
         }
 
         return rendering_values
@@ -157,7 +162,7 @@ class PaymentTransaction(models.Model):
         """
         self.ensure_one()
 
-        if self.provider_code != 'stancer' :
+        if self.provider_code != "stancer":
             super()._process_notification_data(notification_data)
             return
         stancer_provider = self.provider_id
@@ -180,11 +185,9 @@ class PaymentTransaction(models.Model):
             self._process_sucessful_payment(status)
             return
 
-        if status in ('authorized'):
+        if status in ("authorized"):
             payment_stancer = stancer_provider._stancer_make_request(
-                request_url,
-                method="PATCH",
-                payload={status: 'capture'}
+                request_url, method="PATCH", payload={status: "capture"}
             )
             self._process_sucessful_payment(status)
             return
