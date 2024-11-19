@@ -101,7 +101,9 @@ class PaymentProvider(models.Model):
                     "Stancer: "
                     + _(
                         "The communication with the API failed. Stancer gave us the following information: '%s'",
-                        response.json().get("error", {}).get("description",response.json())
+                        response.json()
+                        .get("error", {})
+                        .get("description", response.json()),
                     )
                 )
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
