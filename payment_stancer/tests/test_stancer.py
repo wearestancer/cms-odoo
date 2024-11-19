@@ -22,7 +22,9 @@ class TestStancerPayment(StancerCommon):
 
     def test_get_default_payment_method_codes(self):
         """Test the method that get default payment method codes"""
-        default_payment_method_codes = self.provider._get_default_payment_method_codes()
+        default_payment_method_codes = (
+            self.provider._get_default_payment_method_codes()
+        )
         self.assertEqual(
             default_payment_method_codes, ["stancer", "visa", "mastercard", "cb"]
         )
