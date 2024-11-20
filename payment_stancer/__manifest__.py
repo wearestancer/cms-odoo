@@ -25,4 +25,5 @@
     "post_init_hook": "post_init_hook",
     "uninstall_hook": "uninstall_hook",
     "license": "Other OSI approved licence",
+    "website": "https://stancer.com",
 }
