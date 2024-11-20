@@ -1,4 +1,3 @@
-from decimal import Decimal
 import logging
 
 from werkzeug import urls
@@ -7,7 +6,6 @@ from odoo import _
 from odoo import fields
 from odoo import models
 from odoo.exceptions import ValidationError
-from odoo.tools import float_round
 
 from ..const import PAYMENT_PAGE
 from ..controllers.main import StancerController
@@ -18,34 +16,32 @@ _logger = logging.getLogger(__name__)
 class PaymentTransaction(models.Model):
     _inherit = "payment.transaction"
     stancer_payment_status = fields.Char(
-        string="Stancer Payment Status", readonly=True
+        string="Scancer Payment Status", readonly=True
     )
 
     # === BUSINESS METHODS - PAYMENT FLOW ===#
 
-    def get_amount_as_cent(self, float_amount):
+    def get_amount_as_cent(self, amount: float) -> int:
         """Get the amount of the transaction in cents, as needed by the stancer API
 
-        params: float_amount, the amount we want to convert
+        params: amount, the amount we want to convert
             (sometimes, it is not the transaction amount e.g. refunds)
-        returns: int_amount, the amount converted as cents.
+        returns: the amount converted as cents.
         """
-        str_amount = Decimal(float_amount * pow(10, self.currency_id.decimal_places))
 
-        return int(str_amount)
+        return int(amount * pow(10, self.currency_id.decimal_places))
 
-    def get_amount_as_currency(self, int_amount):
+    def get_amount_as_currency(self, amount: int) -> float:
         """Get the amount of the transaction in the current currency.
 
-        params: float_amount, the amount we want to convert
+        params: amount, the amount we want to convert
             (sometimes, it is not the transaction amount e.g. refunds)
-        returns: float_amount, the amount converted in the current currency.
+        returns: The amount converted in the current currency.
         """
-        str_amount = round(
-            Decimal(int_amount / pow(10, self.currency_id.decimal_places)),
+        return round(
+            amount / pow(10, self.currency_id.decimal_places),
             self.currency_id.decimal_places,
         )
-        return float(str_amount)
 
     def _send_refund_request(self, amount_to_refund=None):
         """Overrride the send refund request to make a refund request."""
@@ -226,5 +222,4 @@ class PaymentTransaction(models.Model):
         self.state_message = (
             response_message if response_message else "The payment has been refused."
         )
-        self.stancer_payment_status = status
         self._set_error(f"Invalid payment status: {status}, response code: {response}")
