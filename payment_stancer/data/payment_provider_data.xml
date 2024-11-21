@@ -6,9 +6,9 @@
         <field name="code">stancer</field>
         <field name="active">False</field>
         <field name="image" type="base64" file="payment_stancer/static/description/icon.png"/>
-        <field name="support_tokenization">True</field>
+        <field name="support_tokenization">False</field>
         <field name="support_express_checkout">False</field>
-        <field name="support_refund"></field>
+        <field name="support_refund">partial</field>
     </record>
 
     <record id="payment_provider_stancer" model="payment.provider">
