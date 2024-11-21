@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-  <template id="stancer_iframe_payment" inherit_id="payment.form">
-    <xpath expr="//form[@id='o_payment_form']/div[@id='o_payment_form_options']" position="after">
+  <template id="stancer_iframe_payment" inherit_id="payment.checkout">
+    <xpath expr="//form[@name='o_payment_checkout']/div[hasclass('card')]" position="after">
       <div id="stancer-checkout-iframe" class="mt-4 w-100 stancer-payment-iframe">
         <iframe
           id="stancer-iframe"
