@@ -3,7 +3,7 @@
     "version": "18.0.1.0.0",
     "category": "Accounting/Payment Providers",
     "sequence": 350,
-    "summary": "Stancer for Odoo",
+    "summary": "A French payment provider covering France",
     "depends": ["payment"],
     "data": [
         "security/ir.model.access.csv",
