@@ -1,1 +1,20 @@
-.venv
+
+# Generated files
+__pycache__/
+.*_cache/
+.venv/
+.coverage
+coverage.xml
+junit.xml
+
+# local files
+*.local
+
+# OS files
+.DS_Store
+._*
+.directory
+
+# Configuration
+.idea/
+.vscode/
